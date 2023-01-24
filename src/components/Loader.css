@@ -1,12 +1,14 @@
 .lds-ellipsis {
-  display: inline-block;
+  display: block;
+  margin: 0 auto;
   position: relative;
   width: 80px;
   height: 80px;
 }
 .lds-ellipsis div {
   position: absolute;
-  top: 33px;
+  top: 50%;
+  left: 50%;
   width: 13px;
   height: 13px;
   border-radius: 50%;
