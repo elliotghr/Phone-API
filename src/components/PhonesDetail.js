@@ -1,14 +1,17 @@
-const PhonesDetail = ({ data }) => {
-  if (!data) return null;
+import { useContext } from "react";
+import { PhoneContext } from "../context/PhoneContext";
 
+const PhonesDetail = () => {
+  const { dataDetails: data } = useContext(PhoneContext);
+
+  if (!data) return null;
+  console.log(data);
   let options = data.data,
     specs = data.data.specifications;
-    
+
   let urlValue = `url('${options.phone_images[0]}')`;
 
-  const find = (query) => {
-    return specs.find((el) => el.title === query);
-  };
+  const find = (query) => specs.find((el) => el.title === query);
 
   let network = find("Network"),
     body = find("Body"),
@@ -29,7 +32,9 @@ const PhonesDetail = ({ data }) => {
         <article class="hero-image" style={{ backgroundImage: urlValue }}>
           <aside class="hero-image-opacity">
             <div class="hero-image-content">
-              <h2 class="hero-image-title">{options.phone_name}</h2>
+              <h2 class="hero-image-title">
+                {options.brand + " " + options.phone_name}
+              </h2>
             </div>
           </aside>
         </article>
@@ -59,7 +64,9 @@ const PhonesDetail = ({ data }) => {
             </thead>
             <tbody>
               <tr>
-                <td>Tamaño de Pantalla</td>
+                <td>
+                  <b>Tamaño de Pantalla</b>
+                </td>
                 <td>{body ? body.specs[0].val[0] : "Sin datos"}</td>
               </tr>
               <tr>

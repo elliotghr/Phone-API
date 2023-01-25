@@ -1,9 +1,12 @@
 import Phones from "./components/Phones";
+import { PhoneProvider } from "./context/PhoneContext";
 
 function App() {
   return (
     <div>
-      <Phones></Phones>
+      <PhoneProvider>
+        <Phones></Phones>
+      </PhoneProvider>
     </div>
   );
 }

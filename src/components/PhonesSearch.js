@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { PhoneContext } from "../context/PhoneContext";
 
-const PhonesSearch = ({ handleSearch }) => {
+const PhonesSearch = () => {
+  const { handleSearch } = useContext(PhoneContext);
   const [form, setForm] = useState({});
 
   const handleSubmit = (e) => {
@@ -14,7 +16,7 @@ const PhonesSearch = ({ handleSearch }) => {
   };
 
   return (
-    <article className="margin-bottom-5">
+    <article className="margin-bottom-2">
       <form onSubmit={handleSubmit}>
         <input
           type="search"

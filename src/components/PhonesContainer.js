@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
+import { PhoneContext } from "../context/PhoneContext";
 import PhonesCard from "./PhonesCard";
 
-const PhonesContainer = ({ data, handleViewSpecs }) => {
-  if (!data) return;
+const PhonesContainer = () => {
+  const { dataPhones: data, handleViewSpecs } = useContext(PhoneContext);
 
+  if (!data) return;
   let phoneData = data.data;
   const { phones, title } = phoneData;
   return (

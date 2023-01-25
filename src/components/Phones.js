@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { helpHttp } from "../helpers/helpHttp";
+import { useContext } from "react";
+import { PhoneContext } from "../context/PhoneContext";
 import Loader from "./Loader";
 import Message from "./Message";
 import PhonesContainer from "./PhonesContainer";
@@ -7,56 +7,12 @@ import PhonesDetail from "./PhonesDetail";
 import PhonesSearch from "./PhonesSearch";
 
 const Phones = () => {
-  const [search, setSearch] = useState(null);
-  const [dataPhones, setDataPhones] = useState(null);
-  const [dataDetails, setDataDetails] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  const handleSearch = (phone) => {
-    setSearch(phone);
-  };
-
-  useEffect(() => {
-    if (!search) return;
-    setLoading(true);
-    let api = `https://phone-specs-api.azharimm.dev/search?query=${search}`;
-    helpHttp()
-      .get(api)
-      .then((res) => {
-        console.log(res);
-        if (res.err) {
-          setError(res);
-        } else {
-          setError(null);
-          setDataPhones(res);
-        }
-      })
-      .finally((res) => {
-        setLoading(false);
-      });
-  }, [search]);
-
-  const handleViewSpecs = (url) => {
-    helpHttp()
-      .get(url)
-      .then((res) => {
-        if (res.err) {
-          setError(res);
-        } else {
-          setError(null);
-          setDataDetails(res);
-        }
-      })
-      .finally((res) => {
-        setLoading(false);
-      });
-  };
+  const { loading, error, search } = useContext(PhoneContext);
 
   return (
     <section className="main-content">
       <h1 className="margin-bottom-1">Phones API</h1>
-      <PhonesSearch handleSearch={handleSearch}></PhonesSearch>
+      <PhonesSearch></PhonesSearch>
       {loading && <Loader></Loader>}
       {error && (
         <Message
@@ -64,15 +20,14 @@ const Phones = () => {
           bgColor="red"
         ></Message>
       )}
-      {search && !loading && (
-        <PhonesContainer
-          data={dataPhones}
-          handleViewSpecs={handleViewSpecs}
-        ></PhonesContainer>
-      )}
-      <PhonesDetail data={dataDetails}></PhonesDetail>
+      {search && !loading && <PhonesContainer></PhonesContainer>}
+      <PhonesDetail></PhonesDetail>
+    </section>
+  );
+};
 
-      {/* <PhonesMarcaSelect
+{
+  /* <PhonesMarcaSelect
         title="Marca"
         url={`https://phone-specs-api.azharimm.dev/brands`}
         handleEndpoint={(e) => {
@@ -92,9 +47,6 @@ const Phones = () => {
         <PhonesDetail
           url={`https://phone-specs-api.azharimm.dev/${modelos}`}
         ></PhonesDetail>
-      )} */}
-    </section>
-  );
-};
-
+      )} */
+}
 export default Phones;
