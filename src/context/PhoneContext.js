@@ -18,7 +18,6 @@ const PhoneProvider = ({ children }) => {
     helpHttp()
       .get(api)
       .then((res) => {
-        console.log(res);
         if (res.err) {
           setError(res);
         } else {
@@ -59,6 +58,7 @@ const PhoneProvider = ({ children }) => {
     dataPhones,
     handleViewSpecs,
     dataDetails,
+    setDataDetails,
   };
   return <PhoneContext.Provider value={data}>{children}</PhoneContext.Provider>;
 };

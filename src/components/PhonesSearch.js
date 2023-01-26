@@ -1,18 +1,24 @@
 import React, { useContext, useState } from "react";
 import { PhoneContext } from "../context/PhoneContext";
 
+const initialForm = {
+  search: "",
+};
+
 const PhonesSearch = () => {
-  const { handleSearch } = useContext(PhoneContext);
-  const [form, setForm] = useState({});
+  const { handleSearch, setDataDetails } = useContext(PhoneContext);
+  const [form, setForm] = useState(initialForm);
 
   const handleSubmit = (e) => {
+    console.log("object");
     e.preventDefault();
     if (!form.search) return alert("Datos incompletos");
     handleSearch(form.search);
+    setDataDetails(null);
   };
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setForm({ search: e.target.value });
   };
 
   return (

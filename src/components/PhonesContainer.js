@@ -9,7 +9,7 @@ const PhonesContainer = () => {
   let phoneData = data.data;
   const { phones, title } = phoneData;
   return (
-    <article className="margin-bottom-1">
+    <article>
       <h2 className="margin-bottom-1">{title}</h2>
       <div className="phone-container">
         {phones.length > 0 ? (
