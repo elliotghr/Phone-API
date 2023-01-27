@@ -12,11 +12,6 @@ const Phones = () => {
   return (
     <>
       <section className="main-content">
-        <header>
-          <nav>
-            <h1 className="margin-bottom-1">Phones API</h1>
-          </nav>
-        </header>
         <PhonesSearch></PhonesSearch>
         {loading && <Loader></Loader>}
         {error && (

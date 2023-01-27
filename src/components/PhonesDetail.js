@@ -34,7 +34,7 @@ const PhonesDetail = () => {
     mainCamera = findTitle("Main Camera"),
     network = findTitle("Network"),
     mainCameraFilter = findTitle("Main Camera");
-
+  console.log(color);
   return (
     <>
       <section id="inicio" className="home margin-bottom-5">
@@ -64,7 +64,7 @@ const PhonesDetail = () => {
           <table>
             <thead>
               <tr>
-                <th colSpan="2">Odoo Attributes</th>
+                <th colSpan="2">Odoo Atributos del producto</th>
               </tr>
               <tr>
                 <th>Product Attributes/Attribute</th>
@@ -77,7 +77,7 @@ const PhonesDetail = () => {
                   <td>
                     <b>Tamaño de Pantalla</b>
                   </td>
-                  <td>{sizeScreen.replace(/ inches, .*/, '"')}</td>
+                  <td>{sizeScreen.replace(/ inches.*/, '"')}</td>
                 </tr>
               )}
               {mainCameraFilter && (
@@ -103,23 +103,25 @@ const PhonesDetail = () => {
                   <td>
                     <b>Cámara Principal</b>
                   </td>
-                  <td>{mainCamera.specs[0].val[0].match(/\d+\sMP/g).join("+")}</td>
+                  <td>
+                    {mainCamera.specs[0].val[0].match(/\d+\sMP/g).join("+")}
+                  </td>
                 </tr>
               )}
-              {/* {options.storage && (
+              {options.storage && (
                 <tr>
                   <td>
                     <b>Almacenamiento interno</b>
                   </td>
-                  <td>{options.storage}</td>
+                  <td>{options.storage.match(/\dGB/g).join(",")}</td>
                 </tr>
-              )} */}
+              )}
               {processorSpeed && (
                 <tr>
                   <td>
                     <b>Velocidad de Procesador</b>
                   </td>
-                  <td>{processorSpeed}</td>
+                  <td>{processorSpeed.match(/\d.\d+\sGHz/)}</td>
                 </tr>
               )}
               {processor && (
@@ -135,7 +137,7 @@ const PhonesDetail = () => {
                   <td>
                     <b>Medidas</b>
                   </td>
-                  <td>{dimension.replace(/\(.*\)/, "")}</td>
+                  <td>{dimension.replace(/mm .*/, "mm")}</td>
                 </tr>
               )}
               {color && (
@@ -201,7 +203,9 @@ const PhonesDetail = () => {
                     <b>Memoria RAM</b>
                   </td>
                   {/* <td>{ram}</td> */}
-                  <td>{[...new Set(ram.match(/\dGB+\sRAM/g))].join(",")}</td>
+                  <td>
+                    {[...new Set(ram.match(/\d(GB|MB| kB)+\sRAM/g))].join(",")}
+                  </td>
                 </tr>
               )}
             </tbody>
