@@ -34,10 +34,10 @@ const PhoneProvider = ({ children }) => {
     setSearch(phone);
   };
 
-  const handleViewSpecs = (url) => {
+  const handleViewSpecs = (slug) => {
     setLoading(true);
     helpHttp()
-      .get(url)
+      .get(`https://phone-specs-api.azharimm.dev/${slug}`)
       .then((res) => {
         if (res.err) {
           setError(res);
