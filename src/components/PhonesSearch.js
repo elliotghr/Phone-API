@@ -10,7 +10,6 @@ const PhonesSearch = () => {
   const [form, setForm] = useState(initialForm);
 
   const handleSubmit = (e) => {
-    console.log("object");
     e.preventDefault();
     if (!form.search) return alert("Datos incompletos");
     handleSearch(form.search);
@@ -22,7 +21,7 @@ const PhonesSearch = () => {
   };
 
   return (
-    <article className="margin-bottom-2">
+    <article className="margin-bottom-1">
       <form onSubmit={handleSubmit}>
         <input
           type="search"

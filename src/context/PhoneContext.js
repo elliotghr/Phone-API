@@ -35,6 +35,7 @@ const PhoneProvider = ({ children }) => {
   };
 
   const handleViewSpecs = (url) => {
+    setLoading(true);
     helpHttp()
       .get(url)
       .then((res) => {

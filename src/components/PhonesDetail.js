@@ -6,27 +6,35 @@ const PhonesDetail = () => {
 
   if (!data) return null;
   console.log(data);
+
   let options = data.data,
     specs = data.data.specifications;
 
   let urlValue = `url('${options.phone_images[0]}')`;
 
-  const find = (query) => specs.find((el) => el.title === query);
+  const findTitle = (query) => specs.find((el) => el.title === query);
+  const SearchAttribute = (spec, value) => {
+    let specValidation = specs.find((el) => el.title === spec);
+    if (!specValidation) return;
+    let valueValidation = specValidation.specs.find((el) => el.key === value);
+    if (!valueValidation) return;
+    return valueValidation.val[0];
+  };
 
-  let network = find("Network"),
-    body = find("Body"),
-    mainCameraFilter = find("Main Camera"),
-    mainCamera = find("Main Camera"),
-    processorSpeed = find("Platform"),
-    processor = find("Platform"),
-    medidas = find("Body"),
-    color = find("Misc"),
-    memoryExpand = find("Memory"),
-    sistemOperative = find("Platform"),
-    selfieCamera = find("Selfie camera"),
-    battery = find("Battery"),
-    ram = find("Memory");
-  console.log(processorSpeed);
+  let sizeScreen = SearchAttribute("Display", "Size"),
+    processorSpeed = SearchAttribute("Platform", "CPU"),
+    processor = SearchAttribute("Platform", "Chipset"),
+    dimension = SearchAttribute("Body", "Dimensions"),
+    color = SearchAttribute("Misc", "Colors"),
+    memoryExpand = SearchAttribute("Memory", "Card slot"),
+    sistemOperative = SearchAttribute("Platform", "OS"),
+    selfieCamera = SearchAttribute("Selfie camera", "Single"),
+    battery = SearchAttribute("Battery", "Type"),
+    ram = SearchAttribute("Memory", "Internal"),
+    mainCamera = findTitle("Main Camera"),
+    network = findTitle("Network"),
+    mainCameraFilter = findTitle("Main Camera");
+
   return (
     <>
       <section id="inicio" className="home margin-bottom-5">
@@ -59,123 +67,143 @@ const PhonesDetail = () => {
                 <th colSpan="2">Odoo Attributes</th>
               </tr>
               <tr>
-                <th>Atributo</th>
-                <th>Valor</th>
+                <th>Product Attributes/Attribute</th>
+                <th>Atributos del producto / Valores</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>
-                  <b>Tamaño de Pantalla</b>
-                </td>
-                <td>{body.specs[0] ? body.specs[0].val[0] : "Sin datos"}</td>
-              </tr>
-              <tr>
-                <td>
-                  <b>Filtro Cámara Principal</b>
-                </td>
-                <td>
-                  {mainCameraFilter
-                    ? mainCameraFilter.specs[0].key
-                    : "Sin datos"}
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <b>Cámara Principal</b>
-                </td>
-                <td>{mainCamera ? mainCamera.specs[0].val[0] : "Sin datos"}</td>
-              </tr>
-              <tr>
-                <td>
-                  <b>Almacenamiento interno</b>
-                </td>
-                <td>{options.storage ? options.storage : "Sin datos"}</td>
-              </tr>
-              <tr>
-                <td>
-                  <b>Velocidad de Procesador</b>
-                </td>
-                <td>
-                  {processorSpeed.specs[2]
-                    ? processorSpeed.specs[2].val[0]
-                    : "Sin datos"}
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <b>Procesador</b>
-                </td>
-                <td>
-                  {processor.specs[1] ? processor.specs[1].val[0] : "Sin datos"}
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <b>Medidas</b>
-                </td>
-                <td>{medidas ? medidas.specs[0].val[0] : "Sin datos"}</td>
-              </tr>
-              <tr>
-                <td>
-                  <b>Color</b>
-                </td>
-                <td>{color ? color.specs[0].val[0] : "Sin datos"}</td>
-              </tr>
-              <tr>
-                <td>
-                  <b>Contenido de la Caja</b>
-                </td>
-                <td>Cable de datos, manual de usuario</td>
-              </tr>
-              <tr>
-                <td>
-                  <b>Memoria expandible</b>
-                </td>
-                <td>
-                  {memoryExpand ? memoryExpand.specs[0].val[0] : "Sin datos"}
-                </td>
-              </tr>
+              {sizeScreen && (
+                <tr>
+                  <td>
+                    <b>Tamaño de Pantalla</b>
+                  </td>
+                  <td>{sizeScreen.replace(/ inches, .*/, '"')}</td>
+                </tr>
+              )}
+              {mainCameraFilter && (
+                <tr>
+                  <td>
+                    <b>Filtro Cámara Principal</b>
+                  </td>
+                  <td>
+                    {mainCameraFilter.specs[0].key === "Quad"
+                      ? "Cuatro Cámaras"
+                      : mainCameraFilter.specs[0].key === "Triple"
+                      ? "Tres Cámaras"
+                      : mainCameraFilter.specs[0].key === "Dual"
+                      ? "Dos Cámaras"
+                      : mainCameraFilter.specs[0].key === "Single"
+                      ? "Una Cámara"
+                      : mainCameraFilter.specs[0].key}
+                  </td>
+                </tr>
+              )}
+              {mainCamera && (
+                <tr>
+                  <td>
+                    <b>Cámara Principal</b>
+                  </td>
+                  <td>{mainCamera.specs[0].val[0].match(/\d+\sMP/g).join("+")}</td>
+                </tr>
+              )}
+              {/* {options.storage && (
+                <tr>
+                  <td>
+                    <b>Almacenamiento interno</b>
+                  </td>
+                  <td>{options.storage}</td>
+                </tr>
+              )} */}
+              {processorSpeed && (
+                <tr>
+                  <td>
+                    <b>Velocidad de Procesador</b>
+                  </td>
+                  <td>{processorSpeed}</td>
+                </tr>
+              )}
+              {processor && (
+                <tr>
+                  <td>
+                    <b>Procesador</b>
+                  </td>
+                  <td>{processor.replace(/\(.*\)/, "")}</td>
+                </tr>
+              )}
+              {dimension && (
+                <tr>
+                  <td>
+                    <b>Medidas</b>
+                  </td>
+                  <td>{dimension.replace(/\(.*\)/, "")}</td>
+                </tr>
+              )}
+              {color && (
+                <tr>
+                  <td>
+                    <b>Color</b>
+                  </td>
+                  <td>{color.replace(/, /g, ",")}</td>
+                </tr>
+              )}
+              {memoryExpand && (
+                <tr>
+                  <td>
+                    <b>Slot de tarjeta microSD</b>
+                  </td>
+                  <td>
+                    {memoryExpand !== "NO"
+                      ? "Sí admite microSD"
+                      : "No admite microSD"}
+                  </td>
+                </tr>
+              )}
+              {/* Network */}
               <tr>
                 <td>
                   <b>Red</b>
                 </td>
                 <td>
-                  {network.specs[network.specs.length - 2]
-                    ? network.specs[network.specs.length - 2].key.toString()
+                  {network?.specs[network.specs.length - 2]
+                    ? network.specs[network.specs.length - 2].key
+                        .toString()
+                        .replace(/ bands.*/, "")
                     : "Sin datos"}
                 </td>
               </tr>
-              <tr>
-                <td>
-                  <b>Sistema Operativo</b>
-                </td>
-                <td>
-                  {sistemOperative
-                    ? sistemOperative.specs[0].val[0]
-                    : "Sin datos"}
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <b>Camara de selfie</b>
-                </td>
-                <td>
-                  {selfieCamera ? selfieCamera.specs[0].val[0] : "Sin datos"}
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <b>Batería</b>
-                </td>
-                <td>{battery ? battery.specs[0].val[0] : "Sin datos"}</td>
-              </tr>
-              <tr>
-                <td>
-                  <b>Memoria RAM</b>
-                </td>
-                <td>{ram.specs[1] ? ram.specs[1].val[0] : "Sin datos"}</td>
-              </tr>
+              {sistemOperative && (
+                <tr>
+                  <td>
+                    <b>Sistema Operativo</b>
+                  </td>
+                  <td>{sistemOperative.replace(/, .*/, "")}</td>
+                </tr>
+              )}
+              {selfieCamera && (
+                <tr>
+                  <td>
+                    <b>Camara de selfie</b>
+                  </td>
+                  <td>{selfieCamera.replace(/MP, .*/, "Mpx")}</td>
+                </tr>
+              )}
+              {battery && (
+                <tr>
+                  <td>
+                    <b>Batería</b>
+                  </td>
+                  <td>{battery.match(/\d+\smAh/)}</td>
+                </tr>
+              )}
+              {ram && (
+                <tr>
+                  <td>
+                    <b>Memoria RAM</b>
+                  </td>
+                  {/* <td>{ram}</td> */}
+                  <td>{[...new Set(ram.match(/\dGB+\sRAM/g))].join(",")}</td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
