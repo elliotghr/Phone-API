@@ -104,7 +104,7 @@ const PhonesDetail = () => {
                     <b>Cámara Principal</b>
                   </td>
                   <td>
-                    {mainCamera.specs[0].val[0].match(/\d+\sMP/g).join("+")}
+                    {mainCamera.specs[0].val[0].match(/\d+\sMP/g).join("+").replace(/ /g, "")}
                   </td>
                 </tr>
               )}
@@ -113,7 +113,7 @@ const PhonesDetail = () => {
                   <td>
                     <b>Almacenamiento interno</b>
                   </td>
-                  <td>{options.storage.match(/\dGB/g).join(",")}</td>
+                  <td>{options.storage.match(/\d+GB/g).join(",")}</td>
                 </tr>
               )}
               {processorSpeed && (
@@ -145,7 +145,7 @@ const PhonesDetail = () => {
                   <td>
                     <b>Color</b>
                   </td>
-                  <td>{color.replace(/, /g, ",")}</td>
+                  <td>{color.replace(/, /g, ",").replace(/; other colors/, "")}</td>
                 </tr>
               )}
               {memoryExpand && (
@@ -204,7 +204,7 @@ const PhonesDetail = () => {
                   </td>
                   {/* <td>{ram}</td> */}
                   <td>
-                    {[...new Set(ram.match(/\d(GB|MB| kB)+\sRAM/g))].join(",")}
+                    {[...new Set(ram.match(/\d+(GB|MB| kB)+\sRAM/g))].join(",").replace(/ RAM/g, "")}
                   </td>
                 </tr>
               )}
