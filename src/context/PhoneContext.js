@@ -10,11 +10,12 @@ const PhoneProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    if (!search) return;
+  const handleSearch = (phone) => {
+    setSearch(phone);
+
     setLoading(true);
     setDataDetails(null);
-    let api = `https://phone-specs-api.azharimm.dev/search?query=${search}`;
+    let api = `https://phone-specs-api.azharimm.dev/search?query=${phone}`;
     helpHttp()
       .get(api)
       .then((res) => {
@@ -28,27 +29,6 @@ const PhoneProvider = ({ children }) => {
       .finally((res) => {
         setLoading(false);
       });
-  }, [search]);
-
-  const handleSearch = (phone) => {
-    setSearch(phone);
-  };
-
-  const handleViewSpecs = (slug) => {
-    setLoading(true);
-    helpHttp()
-      .get(`https://phone-specs-api.azharimm.dev/${slug}`)
-      .then((res) => {
-        if (res.err) {
-          setError(res);
-        } else {
-          setError(null);
-          setDataDetails(res);
-        }
-      })
-      .finally((res) => {
-        setLoading(false);
-      });
   };
 
   const data = {
@@ -57,7 +37,6 @@ const PhoneProvider = ({ children }) => {
     error,
     search,
     dataPhones,
-    handleViewSpecs,
     dataDetails,
     setDataDetails,
   };

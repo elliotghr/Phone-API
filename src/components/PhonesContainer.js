@@ -4,13 +4,12 @@ import PhonesCard from "./PhonesCard";
 
 const PhonesContainer = () => {
   const { dataPhones: data, handleViewSpecs } = useContext(PhoneContext);
-
   if (!data) return;
   let phoneData = data.data;
   const { phones, title } = phoneData;
   return (
-    <article>
-      <h2 className="margin-bottom-1">{title}</h2>
+    <article className="main-content margin-bottom-5">
+      <h2 className="margin-bottom-2">{title}</h2>
       <div className="phone-container">
         {phones.length > 0 ? (
           phones.map((el, index) => (

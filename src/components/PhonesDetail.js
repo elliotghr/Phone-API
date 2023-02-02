@@ -1,11 +1,21 @@
-import { useContext } from "react";
-import { PhoneContext } from "../context/PhoneContext";
+import { useParams } from "react-router-dom";
+import { useFetch } from "../hooks/useFetch";
+import Message from "./Message";
 
 const PhonesDetail = () => {
-  const { dataDetails: data } = useContext(PhoneContext);
-
+  let slug = useParams().slug;
+  const { data, error, loading } = useFetch(
+    `https://phone-specs-api.azharimm.dev/${slug}`
+  );
+  if (error) {
+    return (
+      <Message
+        msg={`Ha ocurrio un error. <br> Es probable que el equipo '<span>${slug}</span>' no exista`}
+        bgColor="#ce0000c2"
+      ></Message>
+    );
+  }
   if (!data) return null;
-  console.log(data);
 
   let options = data.data,
     specs = data.data.specifications;
@@ -34,9 +44,9 @@ const PhonesDetail = () => {
     mainCamera = findTitle("Main Camera"),
     network = findTitle("Network"),
     mainCameraFilter = findTitle("Main Camera");
-  console.log(color);
+
   return (
-    <>
+    <div>
       <section id="inicio" className="home margin-bottom-5">
         <article className="hero-image" style={{ backgroundImage: urlValue }}>
           <aside className="hero-image-opacity">
@@ -104,7 +114,10 @@ const PhonesDetail = () => {
                     <b>Cámara Principal</b>
                   </td>
                   <td>
-                    {mainCamera.specs[0].val[0].match(/\d+\sMP/g).join("+").replace(/ /g, "")}
+                    {mainCamera.specs[0].val[0]
+                      .match(/\d+\sMP/g)
+                      .join("+")
+                      .replace(/ /g, "")}
                   </td>
                 </tr>
               )}
@@ -145,7 +158,9 @@ const PhonesDetail = () => {
                   <td>
                     <b>Color</b>
                   </td>
-                  <td>{color.replace(/, /g, ",").replace(/; other colors/, "")}</td>
+                  <td>
+                    {color.replace(/, /g, ",").replace(/; other colors/, "")}
+                  </td>
                 </tr>
               )}
               {memoryExpand && (
@@ -204,7 +219,9 @@ const PhonesDetail = () => {
                   </td>
                   {/* <td>{ram}</td> */}
                   <td>
-                    {[...new Set(ram.match(/\d+(GB|MB| kB)+\sRAM/g))].join(",").replace(/ RAM/g, "")}
+                    {[...new Set(ram.match(/\d+(GB|MB| kB)+\sRAM/g))]
+                      .join(",")
+                      .replace(/ RAM/g, "")}
                   </td>
                 </tr>
               )}
@@ -212,7 +229,7 @@ const PhonesDetail = () => {
           </table>
         </div>
       </section>
-    </>
+    </div>
   );
 };
 
