@@ -44,7 +44,7 @@ const PhonesDetail = () => {
     mainCamera = findTitle("Main Camera"),
     network = findTitle("Network"),
     mainCameraFilter = findTitle("Main Camera");
-
+  console.log(selfieCamera);
   return (
     <div>
       {/* Hero image */}
@@ -123,20 +123,24 @@ const PhonesDetail = () => {
                   </td>
                 </tr>
               )}
-              {options.storage && (
+              {options.storage &&
+              options.storage !== "No card slot" &&
+              options.storage !== "microSDHC slot" ? (
                 <tr>
                   <td>
                     <b>Almacenamiento interno</b>
                   </td>
-                  <td>{options.storage.match(/\d+GB|MB/g).join(",")}</td>
+                  <td>
+                    {options.storage.match(/(\d+)\s*(TB|GB|MB|kB)/g).join(",")}
+                  </td>
                 </tr>
-              )}
+              ) : null}
               {processorSpeed && (
                 <tr>
                   <td>
                     <b>Velocidad de Procesador</b>
                   </td>
-                  <td>{processorSpeed.match(/\d.\d+\sGHz/)}</td>
+                  <td>{/\d+(\.\d+)?\s*(GHz|MHz)/.exec(processorSpeed)[0]}</td>
                 </tr>
               )}
               {processor && (
@@ -171,7 +175,7 @@ const PhonesDetail = () => {
                     <b>Slot de tarjeta microSD</b>
                   </td>
                   <td>
-                    {memoryExpand !== "NO"
+                    {memoryExpand !== "No"
                       ? "Sí admite microSD"
                       : "No admite microSD"}
                   </td>
@@ -198,32 +202,36 @@ const PhonesDetail = () => {
                   <td>{sistemOperative.replace(/, .*/, "")}</td>
                 </tr>
               )}
-              {selfieCamera && (
+              {selfieCamera && selfieCamera !== "VGA videocall camera" ? (
                 <tr>
                   <td>
                     <b>Camara de selfie</b>
                   </td>
-                  <td>{selfieCamera.replace(/MP, .*/, "Mpx")}</td>
+                  <td>
+                    {/\d+(\.\d+)?\s*MP/
+                      .exec(selfieCamera)[0]
+                      .replace("MP", "Mpx")
+                      .replace(" ", "")}
+                  </td>
                 </tr>
-              )}
-              {battery && (
+              ) : null}
+              {battery && battery !== "Non-removable Li-Ion battery" ? (
                 <tr>
                   <td>
                     <b>Batería</b>
                   </td>
                   <td>{battery.match(/\d+\smAh/)}</td>
                 </tr>
-              )}
+              ) : null}
               {ram && (
                 <tr>
                   <td>
                     <b>Memoria RAM</b>
                   </td>
-                  {/* <td>{ram}</td> */}
                   <td>
-                    {[...new Set(ram.match(/\d+(GB|MB| kB)+\sRAM/g))]
+                    {[...new Set(ram.match(/(\d+)\s*(GB|MB| kB)(\sRAM)/g))]
                       .join(",")
-                      .replace(/ RAM/g, "")}
+                      .replace(/\s*RAM/g, "")}
                   </td>
                 </tr>
               )}
