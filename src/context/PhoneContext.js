@@ -14,7 +14,6 @@ const PhoneProvider = ({ children }) => {
     setSearch(phone);
 
     setLoading(true);
-    setDataDetails(null);
     let api = `https://phone-specs-api.azharimm.dev/search?query=${phone}`;
     helpHttp()
       .get(api)

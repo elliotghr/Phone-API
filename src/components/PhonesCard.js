@@ -1,12 +1,15 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 
-const PhonesCard = ({ el, handleViewSpecs }) => {
-  const { brand, detail, image, phone_name, slug } = el;
+const PhonesCard = ({ el }) => {
+  const { brand, image, phone_name, slug } = el;
+  
   let history = useHistory();
+
   const handleClick = () => {
     history.push(`/${slug}`);
   };
+  
   return (
     <div onClick={handleClick} className="phone-card">
       <img src={image} alt={phone_name} className="margin-bottom-1"></img>

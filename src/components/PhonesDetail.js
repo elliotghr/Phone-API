@@ -44,8 +44,10 @@ const PhonesDetail = () => {
     mainCamera = findTitle("Main Camera"),
     network = findTitle("Network"),
     mainCameraFilter = findTitle("Main Camera");
+
   return (
     <div>
+      {/* Hero image */}
       <section id="inicio" className="home margin-bottom-5">
         <article className="hero-image" style={{ backgroundImage: urlValue }}>
           <aside className="hero-image-opacity">
@@ -58,6 +60,7 @@ const PhonesDetail = () => {
         </article>
       </section>
       <section className="main-content phone-detail-container margin-bottom-1">
+        {/* img container */}
         <article>
           <div className="img-section">
             <h3>Imagenes del {options.phone_name}</h3>
