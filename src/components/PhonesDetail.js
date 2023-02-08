@@ -19,7 +19,6 @@ const PhonesDetail = () => {
 
   let options = data.data,
     specs = data.data.specifications;
-
   let urlValue = `url('${options.phone_images[0]}')`;
 
   const findTitle = (query) => specs.find((el) => el.title === query);
@@ -41,10 +40,10 @@ const PhonesDetail = () => {
     selfieCamera = SearchAttribute("Selfie camera", "Single"),
     battery = SearchAttribute("Battery", "Type"),
     ram = SearchAttribute("Memory", "Internal"),
+    nfc = SearchAttribute("Comms", "NFC"),
     mainCamera = findTitle("Main Camera"),
     network = findTitle("Network"),
     mainCameraFilter = findTitle("Main Camera");
-
   return (
     <div>
       <section id="inicio" className="home margin-bottom-5">
@@ -126,7 +125,7 @@ const PhonesDetail = () => {
                   <td>
                     <b>Almacenamiento interno</b>
                   </td>
-                  <td>{options.storage.match(/\d+GB/g).join(",")}</td>
+                  <td>{options.storage.match(/\d+GB|MB/g).join(",")}</td>
                 </tr>
               )}
               {processorSpeed && (
@@ -222,6 +221,16 @@ const PhonesDetail = () => {
                     {[...new Set(ram.match(/\d+(GB|MB| kB)+\sRAM/g))]
                       .join(",")
                       .replace(/ RAM/g, "")}
+                  </td>
+                </tr>
+              )}
+              {nfc && (
+                <tr>
+                  <td>
+                    <b>NFC</b>
+                  </td>
+                  <td>
+                    {nfc === "Yes" ? "Cuenta con NFC" : "No cuenta con NFC"}
                   </td>
                 </tr>
               )}
