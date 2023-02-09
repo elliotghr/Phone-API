@@ -21,6 +21,8 @@ const PhonesDetail = () => {
     specs = data.data.specifications;
   let urlValue = `url('${options.phone_images[0]}')`;
 
+  console.log(data);
+
   const findTitle = (query) => specs.find((el) => el.title === query);
   const SearchAttribute = (spec, value) => {
     let specValidation = specs.find((el) => el.title === spec);
@@ -41,10 +43,10 @@ const PhonesDetail = () => {
     battery = SearchAttribute("Battery", "Type"),
     ram = SearchAttribute("Memory", "Internal"),
     nfc = SearchAttribute("Comms", "NFC"),
+    sim = SearchAttribute("Body", "SIM"),
     mainCamera = findTitle("Main Camera"),
     network = findTitle("Network"),
     mainCameraFilter = findTitle("Main Camera");
-  console.log(selfieCamera);
   return (
     <div>
       {/* Hero image */}
@@ -71,7 +73,19 @@ const PhonesDetail = () => {
             </div>
           </div>
         </article>
-        <p>Fecha de lanzamiento: {options.release_date}</p>
+        <p className="released">
+          Fecha de lanzamiento: {options.release_date.replace("Released ", "")}
+        </p>
+        <div className="gsm-link margin-bottom-5">
+          <p>{`¿Necesitas más información del ${options.phone_name}?`}</p>
+          <a
+            href={`https://www.gsmarena.com/${slug}.php`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Haz click aqui 👈
+          </a>
+        </div>
         <div className="table-style" role="region" tabIndex="0">
           <table>
             <thead>
@@ -243,6 +257,14 @@ const PhonesDetail = () => {
                   <td>
                     {nfc === "Yes" ? "Cuenta con NFC" : "No cuenta con NFC"}
                   </td>
+                </tr>
+              )}
+              {sim && (
+                <tr>
+                  <td>
+                    <b>SIM</b>
+                  </td>
+                  <td>{sim}</td>
                 </tr>
               )}
             </tbody>
