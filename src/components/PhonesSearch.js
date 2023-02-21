@@ -1,24 +1,20 @@
 import React, { useContext, useState } from "react";
 import { PhoneContext } from "../context/PhoneContext";
-
-const initialForm = {
-  search: "",
-};
+import "../pages/PhoneSearch.css";
 
 const PhonesSearch = () => {
   const { handleSearch, setDataDetails } = useContext(PhoneContext);
-  const [form, setForm] = useState(initialForm);
-
+  const [form, setForm] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!form.search) return alert("Datos incompletos");
-    handleSearch(form.search);
+    handleSearch(form);
     setDataDetails(null);
   };
 
   const handleChange = (e) => {
-    setForm({ search: e.target.value });
+    setForm(e.target.value);
   };
 
   return (
@@ -26,11 +22,10 @@ const PhonesSearch = () => {
       <form onSubmit={handleSubmit}>
         <input
           type="search"
-          id="dispositivo"
           name="search"
           placeholder="Telefono a buscar"
           onChange={handleChange}
-          value={form.search}
+          value={form}
         ></input>
         <input type="submit" value="Buscar"></input>
       </form>

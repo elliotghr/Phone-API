@@ -4,7 +4,9 @@ import PhonesCard from "./PhonesCard";
 
 const PhonesContainer = () => {
   const { dataPhones: data, handleViewSpecs } = useContext(PhoneContext);
+
   if (!data) return;
+  
   let phoneData = data.data;
   const { phones, title } = phoneData;
   return (

@@ -1,12 +1,8 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import "./Navbar.css";
 
 const Navbar = () => {
-  const style = {
-    color: "white",
-    fontSize: "1.2rem",
-    fontVariant: "small-caps",
-  };
   return (
     <header>
       <nav>
@@ -14,7 +10,7 @@ const Navbar = () => {
           <img src="../online-search.png" alt="phone api"></img>
           <span>Phone API</span>
         </div>
-        <NavLink style={style} to="/" activeClassName="active">
+        <NavLink className="Navlink-style" to="/" activeClassName="active">
           Home
         </NavLink>
       </nav>

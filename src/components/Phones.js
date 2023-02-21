@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { HashRouter, NavLink, Route, Switch } from "react-router-dom";
+import { HashRouter, Route, Switch } from "react-router-dom";
 import { PhoneContext } from "../context/PhoneContext";
 import Loader from "./Loader";
 import Message from "./Message";
