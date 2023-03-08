@@ -1,26 +1,88 @@
 import React from "react";
 
-const PhoneTable = ({ phoneData }) => {
-    
-  const {
-    sizeScreen,
-    processorSpeed,
-    processor,
-    dimension,
-    color,
-    memoryExpand,
-    sistemOperative,
-    selfieCamera,
-    battery,
-    ram,
-    nfc,
-    sim,
-    mainCamera,
-    network,
-    mainCameraFilter,
-    options,
-  } = phoneData;
+const PhoneTable = ({ specifications, storage }) => {
+  const findTitle = (query) => specifications.find((el) => el.title === query);
 
+  const searchAttribute = (spec, value) => {
+    let specValidation = specifications
+      .find((el) => el.title === spec)
+      ?.specs.find((el) => el.key === value);
+    return specValidation?.val[0];
+  };
+
+  let sizeScreen = searchAttribute("Display", "Size"),
+    processorSpeed = searchAttribute("Platform", "CPU"),
+    processor = searchAttribute("Platform", "Chipset"),
+    dimension = searchAttribute("Body", "Dimensions"),
+    color = searchAttribute("Misc", "Colors"),
+    memoryExpand = searchAttribute("Memory", "Card slot"),
+    sistemOperative = searchAttribute("Platform", "OS"),
+    selfieCamera = searchAttribute("Selfie camera", "Single"),
+    battery = searchAttribute("Battery", "Type"),
+    ram = searchAttribute("Memory", "Internal"),
+    nfc = searchAttribute("Comms", "NFC"),
+    sim = searchAttribute("Body", "SIM"),
+    mainCamera = findTitle("Main Camera"),
+    network = findTitle("Network"),
+    mainCameraFilter = findTitle("Main Camera");
+
+  const phoneData = {
+    sizeScreen: sizeScreen && sizeScreen.replace(/ inches.*/, '"'),
+    processorSpeed:
+      processorSpeed && /\d+(\.\d+)?\s*(GHz|MHz)/.exec(processorSpeed)[0],
+    processor: processor.replace(/\(.*\)/, ""),
+    dimension: dimension && dimension.replace(/mm .*/, "mm"),
+    color: color && color.replace(/, /g, ",").replace(/; other colors/, ""),
+    memoryExpand:
+      memoryExpand && memoryExpand !== "No"
+        ? "Sí admite microSD"
+        : "No admite microSD",
+    sistemOperative: sistemOperative && sistemOperative.replace(/, .*/, ""),
+    selfieCamera:
+      selfieCamera && selfieCamera !== "VGA videocall camera"
+        ? /\d+(\.\d+)?\s*MP/
+            .exec(selfieCamera)[0]
+            .replace("MP", "Mpx")
+            .replace(" ", "")
+        : null,
+    battery:
+      battery && battery !== "Non-removable Li-Ion battery"
+        ? battery.match(/\d+\smAh/)
+        : null,
+    ram:
+      ram &&
+      [...new Set(ram.match(/(\d+)\s*(GB|MB| kB)(\sRAM)/g))]
+        .join(",")
+        .replace(/\s*RAM/g, ""),
+    nfc: nfc.includes("Yes") ? "Cuenta con NFC" : "No cuenta con NFC",
+    sim,
+    mainCamera:
+      mainCamera &&
+      mainCamera.specs[0].val[0]
+        .match(/\d+\sMP/g)
+        .join("+")
+        .replace(/ /g, ""),
+    network:
+      network && network?.specs[network.specs.length - 2]
+        ? network.specs[network.specs.length - 2].key
+            .toString()
+            .replace(/ bands.*/, "")
+        : "Sin datos",
+    mainCameraFilter:
+      mainCameraFilter && mainCameraFilter.specs[0].key === "Quad"
+        ? "Cuatro Cámaras"
+        : mainCameraFilter.specs[0].key === "Triple"
+        ? "Tres Cámaras"
+        : mainCameraFilter.specs[0].key === "Dual"
+        ? "Dos Cámaras"
+        : mainCameraFilter.specs[0].key === "Single"
+        ? "Una Cámara"
+        : mainCameraFilter.specs[0].key,
+    storage:
+      storage && storage !== "No card slot" && storage !== "microSDHC slot"
+        ? storage.match(/(\d+)\s*(TB|GB|MB|kB)/g).join(",")
+        : null,
+  };
   return (
     <div className="table-style" role="region" tabIndex="0">
       <table>
@@ -34,99 +96,76 @@ const PhoneTable = ({ phoneData }) => {
           </tr>
         </thead>
         <tbody>
-          {sizeScreen && (
+          {phoneData.sizeScreen && (
             <tr>
               <td>
                 <b>Tamaño de Pantalla</b>
               </td>
-              <td>{sizeScreen.replace(/ inches.*/, '"')}</td>
+              <td>{phoneData.sizeScreen}</td>
             </tr>
           )}
-          {mainCameraFilter && (
+          {phoneData.mainCameraFilter && (
             <tr>
               <td>
                 <b>Filtro Cámara Principal</b>
               </td>
-              <td>
-                {mainCameraFilter.specs[0].key === "Quad"
-                  ? "Cuatro Cámaras"
-                  : mainCameraFilter.specs[0].key === "Triple"
-                  ? "Tres Cámaras"
-                  : mainCameraFilter.specs[0].key === "Dual"
-                  ? "Dos Cámaras"
-                  : mainCameraFilter.specs[0].key === "Single"
-                  ? "Una Cámara"
-                  : mainCameraFilter.specs[0].key}
-              </td>
+              <td>{phoneData.mainCameraFilter}</td>
             </tr>
           )}
-          {mainCamera && (
+          {phoneData.mainCamera && (
             <tr>
               <td>
                 <b>Cámara Principal</b>
               </td>
-              <td>
-                {mainCamera.specs[0].val[0]
-                  .match(/\d+\sMP/g)
-                  .join("+")
-                  .replace(/ /g, "")}
-              </td>
+              <td>{phoneData.mainCamera}</td>
             </tr>
           )}
-          {options.storage &&
-          options.storage !== "No card slot" &&
-          options.storage !== "microSDHC slot" ? (
+          {phoneData.storage && (
             <tr>
               <td>
                 <b>Almacenamiento interno</b>
               </td>
-              <td>
-                {options.storage.match(/(\d+)\s*(TB|GB|MB|kB)/g).join(",")}
-              </td>
+              <td>{phoneData.storage}</td>
             </tr>
-          ) : null}
-          {processorSpeed && (
+          )}
+          {phoneData.processorSpeed && (
             <tr>
               <td>
                 <b>Velocidad de Procesador</b>
               </td>
-              <td>{/\d+(\.\d+)?\s*(GHz|MHz)/.exec(processorSpeed)[0]}</td>
+              <td>{phoneData.processorSpeed}</td>
             </tr>
           )}
-          {processor && (
+          {phoneData.processor && (
             <tr>
               <td>
                 <b>Procesador</b>
               </td>
-              <td>{processor.replace(/\(.*\)/, "")}</td>
+              <td>{phoneData.processor}</td>
             </tr>
           )}
-          {dimension && (
+          {phoneData.dimension && (
             <tr>
               <td>
                 <b>Medidas</b>
               </td>
-              <td>{dimension.replace(/mm .*/, "mm")}</td>
+              <td>{phoneData.dimension.replace(/mm .*/, "mm")}</td>
             </tr>
           )}
-          {color && (
+          {phoneData.color && (
             <tr>
               <td>
                 <b>Color</b>
               </td>
-              <td>{color.replace(/, /g, ",").replace(/; other colors/, "")}</td>
+              <td>{phoneData.color}</td>
             </tr>
           )}
-          {memoryExpand && (
+          {phoneData.memoryExpand && (
             <tr>
               <td>
                 <b>Slot de tarjeta microSD</b>
               </td>
-              <td>
-                {memoryExpand !== "No"
-                  ? "Sí admite microSD"
-                  : "No admite microSD"}
-              </td>
+              <td>{phoneData.memoryExpand}</td>
             </tr>
           )}
           {/* Network */}
@@ -134,69 +173,54 @@ const PhoneTable = ({ phoneData }) => {
             <td>
               <b>Red</b>
             </td>
-            <td>
-              {network?.specs[network.specs.length - 2]
-                ? network.specs[network.specs.length - 2].key
-                    .toString()
-                    .replace(/ bands.*/, "")
-                : "Sin datos"}
-            </td>
+            <td>{phoneData.network}</td>
           </tr>
-          {sistemOperative && (
+          {phoneData.sistemOperative && (
             <tr>
               <td>
                 <b>Sistema Operativo</b>
               </td>
-              <td>{sistemOperative.replace(/, .*/, "")}</td>
+              <td>{phoneData.sistemOperative}</td>
             </tr>
           )}
-          {selfieCamera && selfieCamera !== "VGA videocall camera" ? (
+          {phoneData.selfieCamera && (
             <tr>
               <td>
                 <b>Camara de selfie</b>
               </td>
-              <td>
-                {/\d+(\.\d+)?\s*MP/
-                  .exec(selfieCamera)[0]
-                  .replace("MP", "Mpx")
-                  .replace(" ", "")}
-              </td>
+              <td>{phoneData.selfieCamera}</td>
             </tr>
-          ) : null}
-          {battery && battery !== "Non-removable Li-Ion battery" ? (
+          )}
+          {phoneData.battery ? (
             <tr>
               <td>
                 <b>Batería</b>
               </td>
-              <td>{battery.match(/\d+\smAh/)}</td>
+              <td>{phoneData.battery}</td>
             </tr>
           ) : null}
-          {ram && (
+          {phoneData.ram && (
             <tr>
               <td>
                 <b>Memoria RAM</b>
               </td>
-              <td>
-                {[...new Set(ram.match(/(\d+)\s*(GB|MB| kB)(\sRAM)/g))]
-                  .join(",")
-                  .replace(/\s*RAM/g, "")}
-              </td>
+              <td>{phoneData.ram}</td>
             </tr>
           )}
-          {nfc && (
+          {phoneData.nfc && (
             <tr>
               <td>
                 <b>NFC</b>
               </td>
-              <td>{nfc === "Yes" ? "Cuenta con NFC" : "No cuenta con NFC"}</td>
+              <td>{phoneData.nfc}</td>
             </tr>
           )}
-          {sim && (
+          {phoneData.sim && (
             <tr>
               <td>
                 <b>SIM</b>
               </td>
-              <td>{sim}</td>
+              <td>{phoneData.sim}</td>
             </tr>
           )}
         </tbody>

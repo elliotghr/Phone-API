@@ -2,13 +2,13 @@ import React, { useContext, useState } from "react";
 import { PhoneContext } from "../context/PhoneContext";
 import "../pages/PhoneSearch.css";
 
-const PhonesSearch = () => {
+const PhonesForm = () => {
   const { handleSearch, setDataDetails } = useContext(PhoneContext);
   const [form, setForm] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!form.search) return alert("Datos incompletos");
+    if (!form) return alert("Datos incompletos");
     handleSearch(form);
     setDataDetails(null);
   };
@@ -33,4 +33,4 @@ const PhonesSearch = () => {
   );
 };
 
-export default PhonesSearch;
+export default PhonesForm;

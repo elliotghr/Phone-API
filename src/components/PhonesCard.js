@@ -1,8 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 
-const PhonesCard = ({ el }) => {
-  const { brand, image, phone_name, slug } = el;
+const PhonesCard = ({ el: { brand, image, phone_name, slug } }) => {
   let history = useHistory();
 
   return (
