@@ -1,0 +1,21 @@
+/* ******* Hero Image ******* */
+.hero-image {
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  background-attachment: fixed;
+}
+.hero-image-opacity {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: var(--black-alpha-color);
+}
+.hero-image h2 {
+  font-size: 7vw;
+  color: var(--white-color);
+  -webkit-text-stroke: 2px black;
+}

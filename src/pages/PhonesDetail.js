@@ -14,17 +14,16 @@ const PhonesDetail = () => {
     `https://phone-specs-api.azharimm.dev/${slug}`
   );
 
-  if (error) {
+  if (error)
     return (
       <Message
         msg={`Ha ocurrio un error. <br> Es probable que el equipo '<span>${slug}</span>' no exista`}
         bgColor="#ce0000c2"
       ></Message>
     );
-  }
-  if (loading) {
-    return <Loader></Loader>;
-  }
+
+  if (loading) return <Loader></Loader>;
+
   if (!data) return null;
 
   const {
@@ -46,22 +45,22 @@ const PhonesDetail = () => {
         urlBackgroundImage={urlBackgroundImage}
         options={{ brand: brand, name: phone_name }}
       ></HeroImage>
-      <section className="main-content phone-detail-container margin-bottom-1">
+      <section>
         <PhoneImageContainer
           phone_name={phone_name}
           phone_images={phone_images}
         ></PhoneImageContainer>
-        <p className="released">
+        <p className="released margin-bottom-2">
           Fecha de lanzamiento: {release_date.replace("Released ", "")}
         </p>
-        <PhoneLinkGSMArena
-          phone_name={phone_name}
-          slug={slug}
-        ></PhoneLinkGSMArena>
         <PhoneTable
           specifications={specifications}
           storage={storage}
         ></PhoneTable>
+        <PhoneLinkGSMArena
+          phone_name={phone_name}
+          slug={slug}
+        ></PhoneLinkGSMArena>
       </section>
     </div>
   );

@@ -1,8 +1,9 @@
 import React from "react";
+import "./PhoneLinkGSMArena.css";
 
 const PhoneLinkGSMArena = ({ phone_name, slug }) => {
   return (
-    <div className="gsm-link margin-bottom-5">
+    <div className="gsm-link">
       <p>{`¿Necesitas más información del ${phone_name}?`}</p>
       <a
         href={`https://www.gsmarena.com/${slug}.php`}

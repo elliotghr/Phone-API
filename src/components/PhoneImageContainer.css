@@ -1,0 +1,29 @@
+/* PhoneContainer */
+.phone-img-container {
+  width: 100%;
+  max-width: var(--width-container);
+  margin: 0 auto;
+}
+.phone-img-container .img-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+.img-container img {
+  width: 100%;
+  max-width: 200px;
+  margin: 0 auto 2rem;
+  border-radius: 1rem;
+}
+/* PhoneDetails */
+.img-section > h3 {
+  width: 70%;
+  font-size: 1.7rem;
+  margin: 0 auto;
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+  border-bottom: 4px solid #684b60;
+  text-align: center;
+}
