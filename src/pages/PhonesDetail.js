@@ -22,6 +22,9 @@ const PhonesDetail = () => {
       ></Message>
     );
   }
+  if (loading) {
+    return <Loader></Loader>;
+  }
   if (!data) return null;
 
   const {
@@ -39,7 +42,6 @@ const PhonesDetail = () => {
 
   return (
     <div>
-      {loading && <Loader></Loader>}
       <HeroImage
         urlBackgroundImage={urlBackgroundImage}
         options={{ brand: brand, name: phone_name }}

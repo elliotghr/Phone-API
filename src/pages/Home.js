@@ -1,27 +1,24 @@
-import React, { useContext } from "react";
-import Loader from "../components/Loader";
+import React from "react";
 import Message from "../components/Message";
-import PhonesContainer from "../components/PhonesContainer";
-import PhonesForm from "../components/PhonesForm";
-import { PhoneContext } from "../context/PhoneContext";
+import Loader from "../components/Loader";
+import PhonesResults from "../components/PhonesResults";
+import HomeTitle from "../components/HomeTitle";
+import useFetchPhones from "../hooks/useFetchPhones";
+import "./Home.css";
 
 const Home = () => {
-  const { loading, error, search, dataDetails } = useContext(PhoneContext);
+  const { loading, error } = useFetchPhones();
+  if (error) return <Message msg={error} bgColor={"red"}></Message>;
+  if (loading) return <Loader></Loader>;
+  const lsKeyword = localStorage.getItem("phone");
 
   return (
-    <div>
-      <PhonesForm></PhonesForm>
-      {loading && <Loader></Loader>}
-      {error && (
-        <Message
-          msg={`${error.statusText}, status: ${error.status}`}
-          bgColor="red"
-        ></Message>
-      )}
-      {search && !loading && !dataDetails && (
-        <PhonesContainer></PhonesContainer>
-      )}
-    </div>
+    <section className="home">
+      <article className="home-container">
+        <HomeTitle lsKeyword={lsKeyword}></HomeTitle>
+        <PhonesResults></PhonesResults>
+      </article>
+    </section>
   );
 };
 

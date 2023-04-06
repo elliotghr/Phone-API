@@ -6,7 +6,7 @@ const Navbar = () => {
   return (
     <header>
       <nav>
-        <div>
+        <div className="logo-container">
           <img src="../online-search.png" alt="phone api"></img>
           <span>Phone API</span>
         </div>

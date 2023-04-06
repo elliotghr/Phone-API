@@ -1,0 +1,11 @@
+.phone-results {
+  width: 100%;
+  max-width: var(--width-container);
+  margin: 0 auto;
+}
+.phone-results-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  justify-items: center;
+  gap: 2rem;
+}

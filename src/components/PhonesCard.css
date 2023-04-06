@@ -1,0 +1,23 @@
+.phone-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-width: 200px;
+  padding: 1rem 0;
+  border: 1px solid rgba(179, 179, 179, 0.274);
+  border-radius: 1rem;
+  box-shadow: 5px 5px 5px rgba(0, 0, 34, 0.089);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+.phone-card:hover {
+  transform: scale(1.1);
+  transition: all 0.2s ease-in-out;
+  box-shadow: 5px 5px 5px rgba(0, 0, 34, 0.322);
+}
+.phone-card h5 {
+  font-size: 1rem;
+  color: rgb(91, 91, 91);
+  text-align: center;
+}
